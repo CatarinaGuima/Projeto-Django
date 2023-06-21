@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'financeiro',
     'produtos',
     'recursos_humanos',
+    'database',
 ]
 
 MIDDLEWARE = [

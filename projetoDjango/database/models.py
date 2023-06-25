@@ -1,9 +1,8 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser
 
 # Create your models here.
 #Módulo Login
-class Login(AbstractBaseUser):
+class Login(models.Model):
     username = models.EmailField(max_length=60, unique=True) 
     password = models.CharField(max_length=128)
 
@@ -77,7 +76,7 @@ class Financeiro(models.Model):
         return f'{self.tipo} - {self.data}'
 
 # Módulo Recursos Humanos
-class RH(models.Model):
+class RecursosHumano(models.Model):
     funcionario = models.CharField(max_length=100)
     cargo = models.CharField(max_length=100)
     salario = models.DecimalField(max_digits=8, decimal_places=2)
@@ -85,6 +84,5 @@ class RH(models.Model):
     folha_de_ponto = models.CharField(max_length=100)
     setor = models.CharField(max_length=100)    
 
-    #Falta adicionar depois
-    # def __str__(self):
-    #     return self.funcionario
+    def __str__(self):
+        return self.funcionario

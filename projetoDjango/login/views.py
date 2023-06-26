@@ -1,24 +1,27 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+from database.models import Login
 
-# Create your views here.
-def loginScreen(request):
+
+def login(request):
     if request.method == 'POST':
-        # Obtenha as credenciais do usuário enviadas na solicitação
+        # Credenciais do usuário enviadas na solicitação
         username = request.POST.get('username')
         password = request.POST.get('password')
 
-        # Verifique no banco de dados se o usuário existe
-        # Faça as validações e autenticação necessárias
+        # Verifica no banco de dados se o usuário existe
+        try:
+            user = Login.objects.get(username=username)
+        except Login.DoesNotExist:
+            # Usuário não existe
+            return JsonResponse({'message': 'Usuário não encontrado'}, status=404)
 
-        # Exemplo simples de verificação de usuário
-        if username == 'teste@123.com' and password == '123':
-            # Usuário válido
+        # validações e autenticação 
+        if user.password == password:
+            # Credenciais válidas
             return JsonResponse({'message': 'Login bem-sucedido'})
         else:
             # Credenciais inválidas
             return JsonResponse({'message': 'Credenciais negadas'}, status=401)
-    else: 
-        return render(request, 'login/login.html')
-
     
+    return render(request, 'login/login.html')

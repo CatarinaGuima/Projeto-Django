@@ -57,6 +57,11 @@ def view_registrar_estoque(request):
                 "nome_produto": query_set.nome_produto,
             }
         })
+    elif request.method == 'DELETE':
+        decode_json = request.body.decode('utf-8')
+        registro_financeiro = json.loads(decode_json)
+        query_set = Estoque.objects.get(pk=registro_financeiro['id'])
+        query_set.delete()
 
 def view_buscar_estoque(request, id):
     if request.method == 'GET':

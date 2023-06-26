@@ -64,6 +64,11 @@ def view_registrar_produtos(request):
                 "tipo": query_set.tipo,
             }
         })
+    elif request.method == 'DELETE':
+        decode_json = request.body.decode('utf-8')
+        registro_financeiro = json.loads(decode_json)
+        query_set = Produto.objects.get(pk=registro_financeiro['id'])
+        query_set.delete()
 
 def view_buscar_produtos(request, id):
     if request.method == 'GET':

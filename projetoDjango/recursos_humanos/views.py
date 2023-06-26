@@ -8,11 +8,12 @@ def parse_json(query_serializer):
     resposta_json = []
     for item in query_serializer:
         itens = {
-                 "tipo": item['fields']['tipo'],
-                 "status": item['fields']['status'],
-                 "data": item['fields']['data'],
-                 "descricao": item['fields']['descricao'],
-                 "valor": item['fields']['valor'],
+                 "funcionario": item['fields']['funcionario'],
+                 "cargo": item['fields']['cargo'],
+                 "salario": item['fields']['salario'],
+                 "carga_horaria": item['fields']['carga_horaria'],
+                 "folha_de_ponto": item['fields']['folha_de_ponto'],
+                 "setor": item['fields']['setor']
                 }
         resposta_json.append(itens)
     return resposta_json    
@@ -20,18 +21,18 @@ def parse_json(query_serializer):
 def view_registrar_recursosHumanos(request):
     if request.method == 'POST':
         decode_json = request.body.decode('utf-8')
-        registro_financeiro= json.loads(decode_json)
-        banco = RecursosHumano(tipo=registro_financeiro['tipo'], status=registro_financeiro['status'], data=registro_financeiro['data'], descricao=registro_financeiro['descricao'], valor=registro_financeiro['valor'])
+        registro_recursosHumanos= json.loads(decode_json)
+        banco = RecursosHumano(funcionario=registro_recursosHumanos['funcionario'], cargo=registro_recursosHumanos['cargo'], salario=registro_recursosHumanos['salario'], carga_horaria=registro_recursosHumanos['carga_horaria'], folha_de_ponto=registro_recursosHumanos['folha_de_ponto'], setor=registro_recursosHumanos['setor'])
         banco.save()
         return JsonResponse({
             "status": "Cadastro Realizado com Sucesso",
             "registro": {
                 "id": banco.pk,
-                "tipo": registro_financeiro['tipo'],
-                "status": registro_financeiro['status'],
-                "data": registro_financeiro['data'],
-                "descricao": registro_financeiro['descricao'],
-                "valor": registro_financeiro['valor'],
+                "cargo":  registro_recursosHumanos['cargo'],
+                "salario":  registro_recursosHumanos['salario'],
+                "carga_horaria":  registro_recursosHumanos['carga_horaria'],
+                "folha_de_ponto":  registro_recursosHumanos['folha_de_ponto'],
+                "setor":  registro_recursosHumanos['setor']
             }
         })
     elif request.method == 'GET':
@@ -44,27 +45,27 @@ def view_registrar_recursosHumanos(request):
         decode_json = request.body.decode('utf-8')
         registro_financeiro = json.loads(decode_json)
         query_set = RecursosHumano.objects.get(pk=registro_financeiro['id'])
-        query_set.tipo = registro_financeiro['tipo']
-        query_set.status = registro_financeiro['status']
-        query_set.data = registro_financeiro['data']
-        query_set.descricao = registro_financeiro['descricao']
-        query_set.valor = registro_financeiro['valor']
+        query_set.cargo = registro_financeiro['cargo']
+        query_set.salario = registro_financeiro['salario']
+        query_set.carga_horaria = registro_financeiro['carga_horaria']
+        query_set.folha_de_ponto = registro_financeiro['folha_de_ponto']
+        query_set.setor = registro_financeiro['setor']
         query_set.save()
         return JsonResponse({
             "status": "Cadastro Atualizado com sucesso.",
             "registro": {
                 "id": query_set.pk,
-                "tipo": query_set.tipo,
-                "status": query_set.status,
-                "data":  query_set.data,
-                "descricao":  query_set.descricao,
-                "valor":  query_set.valor
+                "cargo": query_set.cargo,
+                "salario": query_set.salario,
+                "carga_horaria":  query_set.carga_horaria,
+                "folha_de_ponto":  query_set.folha_de_ponto,
+                "setor":  query_set.setor
             }
         })
     elif request.method == 'DELETE':
         decode_json = request.body.decode('utf-8')
-        registro_financeiro = json.loads(decode_json)
-        query_set = RecursosHumano.objects.get(pk=registro_financeiro['id'])
+        registro_recursosHumanos = json.loads(decode_json)
+        query_set = RecursosHumano.objects.get(pk=registro_recursosHumanos['id'])
         query_set.delete()
 
 def view_buscar_recursosHumanos(request, id):

@@ -69,6 +69,7 @@ def view_registrar_produtos(request):
         registro_financeiro = json.loads(decode_json)
         query_set = Produto.objects.get(pk=registro_financeiro['id'])
         query_set.delete()
+        return JsonResponse({"status": "Dado excluído com sucesso."})
 
 def view_buscar_produtos(request, id):
     if request.method == 'GET':

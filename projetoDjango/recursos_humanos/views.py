@@ -67,6 +67,7 @@ def view_registrar_recursosHumanos(request):
         registro_recursosHumanos = json.loads(decode_json)
         query_set = RecursosHumano.objects.get(pk=registro_recursosHumanos['id'])
         query_set.delete()
+        return JsonResponse({"status": "Dado excluído com sucesso."})
 
 def view_buscar_recursosHumanos(request, id):
     if request.method == 'GET':

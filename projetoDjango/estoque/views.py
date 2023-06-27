@@ -62,7 +62,8 @@ def view_registrar_estoque(request):
         registro_financeiro = json.loads(decode_json)
         query_set = Estoque.objects.get(pk=registro_financeiro['id'])
         query_set.delete()
-
+        return JsonResponse({"status": "Dado excluído com sucesso."})
+    
 def view_buscar_estoque(request, id):
     if request.method == 'GET':
         query_set = Estoque.objects.get(pk=id)

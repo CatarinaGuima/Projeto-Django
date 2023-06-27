@@ -66,6 +66,7 @@ def view_registrar_financeiro(request):
         registro_financeiro = json.loads(decode_json)
         query_set = Financeiro.objects.get(pk=registro_financeiro['id'])
         query_set.delete()
+        return JsonResponse({"status": "Dado excluído com sucesso."})
 
 def view_buscar_financeiro(request, id):
     if request.method == 'GET':

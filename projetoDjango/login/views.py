@@ -60,10 +60,10 @@ def view_registrar_usuarios(request):
         return JsonResponse(resposta_json, safe=False)    
     elif request.method == 'PUT':
         decode_json = request.body.decode('utf-8')
-        registro_produto = json.loads(decode_json)
-        query_set = Login.objects.get(pk=registro_produto['id'])
-        query_set.username = registro_produto['username']
-        query_set.password = registro_produto['password']
+        registro_login = json.loads(decode_json)
+        query_set = Login.objects.get(pk=registro_login['id'])
+        query_set.username = registro_login['username']
+        query_set.password = registro_login['password']
         query_set.save()
         return JsonResponse({
             "status": "Cadastro Atualizado com sucesso.",
@@ -78,6 +78,7 @@ def view_registrar_usuarios(request):
         registro_login = json.loads(decode_json)
         query_set = Login.objects.get(pk=registro_login['id'])
         query_set.delete()
+        return JsonResponse({"status": "Dado excluído com sucesso."})
 
 def view_buscar_usuarios(request, id):
     if request.method == 'GET':

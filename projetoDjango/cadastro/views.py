@@ -57,6 +57,7 @@ def view_registrar_cadastros(request):
         registro_financeiro = json.loads(decode_json)
         query_set = Cadastro.objects.get(pk=registro_financeiro['id'])
         query_set.delete()
+        return JsonResponse({"status": "Dado excluído com sucesso."})
 
 def view_buscar_cadastros(request, id):
     if request.method == 'GET':

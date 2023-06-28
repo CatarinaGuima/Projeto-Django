@@ -2,7 +2,9 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from database.models import Login
 from django.core import serializers
+from django.core.exceptions import ObjectDoesNotExist
 import json
+
 
 # Create your views here.
 def login(request):
@@ -17,7 +19,6 @@ def login(request):
         except Login.DoesNotExist:
             # Usuário não existe
             return JsonResponse({'message': 'Usuário não encontrado'}, status=404)
-
         # validações e autenticação 
         if user.password == password:
             # Credenciais válidas
@@ -82,7 +83,12 @@ def view_registrar_usuarios(request):
 
 def view_buscar_usuarios(request, id):
     if request.method == 'GET':
-        query_set = Login.objects.get(pk=id)
-        query_serialize = json.loads(serializers.serialize('json', [query_set]))
-        resposta_json = parse_json(query_serialize)                                     
-    return JsonResponse(resposta_json, safe=False)
+        try: 
+            query_set = Login.objects.get(pk=id)
+            query_serialize = json.loads(serializers.serialize('json', [query_set]))
+            resposta_json = parse_json(query_serialize)      
+            return JsonResponse(resposta_json, safe=False)                               
+        except ObjectDoesNotExist:
+            # Objeto não encontrado, retornar uma resposta adequada
+            return JsonResponse({'error': 'ID não existe.'}, status=404)
+     

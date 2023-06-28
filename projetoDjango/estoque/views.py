@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from django.core import serializers
 import json
 from database.models import Estoque #nome da classe do models de database
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
 def parse_json(query_serializer):
@@ -66,7 +67,11 @@ def view_registrar_estoque(request):
     
 def view_buscar_estoque(request, id):
     if request.method == 'GET':
+     try: 
         query_set = Estoque.objects.get(pk=id)
         query_serialize = json.loads(serializers.serialize('json', [query_set]))
         resposta_json = parse_json(query_serialize)                                     
-    return JsonResponse(resposta_json, safe=False)
+        return JsonResponse(resposta_json, safe=False)
+     except ObjectDoesNotExist:
+        # Objeto não encontrado, retornar uma resposta adequada
+        return JsonResponse({'error': 'ID não existe.'}, status=404)

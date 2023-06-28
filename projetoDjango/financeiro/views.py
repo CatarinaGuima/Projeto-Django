@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from django.core import serializers
 import json
 from database.models import Financeiro #nome da classe do models de database
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
 def parse_json(query_serializer):
@@ -70,7 +71,11 @@ def view_registrar_financeiro(request):
 
 def view_buscar_financeiro(request, id):
     if request.method == 'GET':
-        query_set = Financeiro.objects.get(pk=id)
-        query_serialize = json.loads(serializers.serialize('json', [query_set]))
-        resposta_json = parse_json(query_serialize)                                     
-    return JsonResponse(resposta_json, safe=False)
+        try:
+            query_set = Financeiro.objects.get(pk=id)
+            query_serialize = json.loads(serializers.serialize('json', [query_set]))
+            resposta_json = parse_json(query_serialize)                                     
+            return JsonResponse(resposta_json, safe=False)
+        except ObjectDoesNotExist:
+            # Objeto não encontrado, retornar uma resposta adequada
+            return JsonResponse({'error': 'ID não existe.'}, status=404)

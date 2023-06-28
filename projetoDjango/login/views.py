@@ -5,7 +5,6 @@ from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
 import json
 
-
 # Create your views here.
 def login(request):
     if request.method == 'POST':
